@@ -6,51 +6,32 @@
            <div class="col-md-12">
              <h4>DAFTAR TUGAS<a href="<?= base_url('C_Tugas/form_tambah') ?>" class="btn btn-primary float-right">Tambah</a></h4><br>
              <?= $this->session->flashdata('message') ?>
-             <div class="table-responsive">
-               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                 <thead>
-                   <tr>
-                     <th class="text-center" width="10%">No</th>
-                     <th class="text-center">Pelajaran</th>
-                     <th class="text-center">kelas</th>
-                     <th class="text-center" width="15%">Upload</th>
-                     <th class="text-center" width="15%">Batas Tugas</th>
-                     <th class="text-center" width="20%">Aksi</th>
-                   </tr>
-                 </thead>
-                 <tfoot>
-                   <tr>
-                     <th class="text-center" width="10%">No</th>
-                     <th class="text-center">Pelajaran</th>
-                     <th class="text-center">kelas</th>
-                     <th class="text-center" width="15%">Upload</th>
-                     <th class="text-center" width="15%">Batas Tugas</th>
-                     <th class="text-center" width="20%">Aksi</th>
-                   </tr>
-                 </tfoot>
-                 <tbody>
-                   <?php
-                    $no = 1;
-                    foreach ($data_siswa as $dat) {
-                    ?>
-                     <tr>
-                       <td class="text-center"><?php echo $no++; ?></td>
-                       <td class="text-center"><?php echo $dat->nama_pelajaran; ?></td>
-                       <td class="text-center"><?php echo $dat->nama_kelas; ?>
-                       <td class="text-center"><?php echo $dat->uploading; ?>
-
-                       </td>
-                       <td class="text-center"><?php echo $dat->batas_tugas; ?>
-                       <td class="text-center">
-                         <a class="badge badge-info" href="<?php echo base_url() . 'C_tugas/info/' . $dat->id_tugas . '/' . $dat->id_kelas ?>"> Info</a>
-                         <a class="badge badge-warning" href="<?php echo base_url() . 'C_tugas/form_edit/' . $dat->id_tugas ?>"> Edit</a>
-                         <a class="badge badge-danger" href="<?php echo base_url() . 'C_tugas/hapus_tugas/' . $dat->id_tugas ?>"> Delete</a>
-                       </td>
-                     </tr>
-                   <?php } ?>
-                 </tbody>
-               </table>
+             <div class="row">
+               <?php foreach ($kelas as $k) : ?>
+                 <div class="col-md-4">
+                   <div class="card border-primary">
+                     <div class="card-header text-center bg-warning"><strong><?= $k['nama_kelas'] ?></strong></div>
+                     <?php foreach ($data_siswa as $dat) : ?>
+                       <?php if ($dat->id_kelas === $k['id_kelas']) : ?>
+                         <div class="card-body">
+                           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities<?= $dat->id_tugas ?>" aria-expanded="true" aria-controls="collapseUtilities">
+                             <?= $dat->nama_pelajaran ?> (<span><?= $dat->batas_tugas ?></span>)
+                           </a>
+                           <div id="collapseUtilities<?= $dat->id_tugas ?>" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                             <div class="bg-white py-2 collapse-inner rounded text-center">
+                               <a class="badge badge-info" href="<?php echo base_url() . 'C_tugas/info/' . $dat->id_tugas . '/' . $dat->id_kelas ?>"> Info</a>
+                               <a class="badge badge-warning" href="<?php echo base_url() . 'C_tugas/form_edit/' . $dat->id_tugas ?>"> Edit</a>
+                               <a class="badge badge-danger" href="<?php echo base_url() . 'C_tugas/hapus_tugas/' . $dat->id_tugas ?>"> Delete</a>
+                             </div>
+                           </div>
+                         </div>
+                       <?php endif ?>
+                     <?php endforeach ?>
+                   </div>
+                 </div>
+               <?php endforeach ?>
              </div>
+             <?= $this->session->flashdata('message') ?>
            </div>
          </div>
        </div>

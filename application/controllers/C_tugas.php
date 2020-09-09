@@ -26,6 +26,8 @@ class C_Tugas extends CI_Controller {
 	public function index()
 	{
 		$data['data_siswa'] = $this->M_Tugas->tampil_tugas();
+        $data['pelajaran'] = $this->M_Tugas->tampil('pelajaran');
+        $data['kelas'] = $this->M_Tugas->tampil('kelas');
         $this->load->view('admin/header');
         $this->load->view('admin/tugas/index',$data);
         $this->load->view('admin/footer');
