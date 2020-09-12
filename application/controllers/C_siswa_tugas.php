@@ -75,13 +75,13 @@ class C_siswa_tugas extends CI_Controller {
         $tanggal=date('Y-m-d');
         $file=$_FILES['file']['name'];
         if ($file) {
-                 $config['file_name']          = ''.$nis.'-'.$nama_kelas.'-'.$nama_pelajaran.''.time().'';
+                 $config['file_name']            = ''.$nis.'-'.$nama_kelas.'-'.$nama_pelajaran.''.$id_tugas.'';
+                 $config['overwrite']            = TRUE;
                  $config['upload_path']          = './assets/img/';
                  $config['allowed_types']        = 'doc|docx|pdf|jpeg|jpg|png';
                  $config['max_size']             = '5000';
 
                  $this->load->library('upload', $config);
-
                  if ($this->upload->do_upload('file')) {
 
                     $new_file=$this->upload->data('file_name');
@@ -98,16 +98,34 @@ class C_siswa_tugas extends CI_Controller {
             </div>');
                 return redirect(base_url().'C_siswa_tugas/upload_tugas/'.$id_tugas.'');
             }
-        $data = array(
+        $gambar=$this->Crud->tampil_id('tugas_terkumpul','file_jawaban', $new_file);
+        if ($gambar != NULL ) {
+            # code..
+             $id=$gambar['id_tugas_terkumpul'];
+
+             $data = array(
+            'nis' => $nis,
+            'file_jawaban'=> $new_file,
+            'tanggal'=>$tanggal, 
+            'nilai'=>'-');
+            $this->Crud->edit('tugas_terkumpul','file_jawaban',$id,$data);
+            $this->session->set_flashdata('message','<div class="alert alert-success" role="alert">
+                    berhasil mengupload tugas
+                </div>');
+        } else {
+            # code...
+            $data = array(
             'id_tugas' => $id_tugas,
             'nis' => $nis,
             'file_jawaban'=> $new_file,
             'tanggal'=>$tanggal, 
             'nilai'=>'-');
-        $this->db->insert('tugas_terkumpul',$data);
-        $this->session->set_flashdata('message','<div class="alert alert-success" role="alert">
-                berhasil mengupload tugas
-            </div>');
+            $this->db->insert('tugas_terkumpul',$data);
+            $this->session->set_flashdata('message','<div class="alert alert-success" role="alert">
+                    berhasil mengupload tugas
+                </div>');
+        }
+        
         return redirect('C_siswa_tugas');
     }
 
