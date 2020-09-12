@@ -27,6 +27,11 @@
                   <div class="form-group">
                   <label class="text-center">Upload Jawaban : </label>
                   <input type="file" name="file" class="btn-primary">
+                  <p>
+                    <b>pernyarata file:</b><br>
+                    1. berjenis file (doc,docx,pdf,jpeg,jpg,png).<br>
+                    2. ukuran kurang dari 5 MB
+                  </p>
                   </div>
                   <br><button class="btn btn-primary" type="submit">kirim</button>
                 <?php } ?>

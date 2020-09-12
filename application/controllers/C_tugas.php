@@ -51,12 +51,18 @@ class C_Tugas extends CI_Controller {
         }
         if ($kamo==null) {
            $data['nopoka'] = $this->M_Tugas->siswa_tidak_kumpul_semua($id_tugas,$id_kelas);
+           $data['id_kelas'] =$id_kelas;
+           $pelajaran = $this->Crud->tampil_tamu('tugas','id_tugas',$id_tugas);
+           $data['id_pelajaran']= $pelajaran[0]['id_pelajaran']; 
             $this->load->view('admin/header');
             $this->load->view('admin/tugas/terkumpul',$data);
             $this->load->view('admin/footer');
         }else{
 
             $data['nopoka'] = $this->M_Tugas->siswa_tidak_kumpul($id_tugas,$kamo,$id_kelas);
+            $data['id_kelas'] =$id_kelas;
+           $pelajaran = $this->Crud->tampil_tamu('tugas','id_tugas',$id_tugas);
+           $data['id_pelajaran']= $pelajaran[0]['id_pelajaran']; 
             $this->load->view('admin/header');
             $this->load->view('admin/tugas/terkumpul',$data);
             $this->load->view('admin/footer');

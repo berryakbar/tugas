@@ -21,6 +21,7 @@ class C_siswa_tugas extends CI_Controller {
         $this->load->model("M_Tugas");
         $this->load->model("M_kelas");
         $this->load->model("M_siswa");
+        $this->load->model("Crud");
         $this->load->library('form_validation');
     }
 
@@ -67,9 +68,14 @@ class C_siswa_tugas extends CI_Controller {
     {
         $nis=$this->session->userdata('nis');
         $id_tugas=$this->input->post('id_tugas');
+        $nama_siswa=$this->Crud->tampil_id('siswa','nis',$nis);
+        $nama_tugas=$this->Crud->tampil_id('tugas','id_tugas',$id_tugas);
+        $nama_pelajaran=cek_pelajaran($nama_tugas['id_pelajaran']);
+        $nama_kelas=cek_kelas($nama_siswa['id_kelas']);
         $tanggal=date('Y-m-d');
         $file=$_FILES['file']['name'];
         if ($file) {
+                 $config['file_name']          = ''.$nis.'-'.$nama_kelas.'-'.$nama_pelajaran.''.time().'';
                  $config['upload_path']          = './assets/img/';
                  $config['allowed_types']        = 'doc|docx|pdf|jpeg|jpg|png';
                  $config['max_size']             = '5000';
@@ -81,10 +87,16 @@ class C_siswa_tugas extends CI_Controller {
                     $new_file=$this->upload->data('file_name');
 
                  }else{
-                    $new_file= "kosong2.png";
+                    $this->session->set_flashdata('message','<div class="alert alert-danger" role="alert">
+                    file anda tidak memenuhi syarat 
+                </div>');
+                     return redirect(base_url().'C_siswa_tugas/upload_tugas/'.$id_tugas.'');
                  }
             }else{
-                $new_file= "kosong3.png";
+                $this->session->set_flashdata('message','<div class="alert alert-danger" role="alert">
+                gagal mengupload pilih file terlebih dahulu
+            </div>');
+                return redirect(base_url().'C_siswa_tugas/upload_tugas/'.$id_tugas.'');
             }
         $data = array(
             'id_tugas' => $id_tugas,
@@ -93,6 +105,9 @@ class C_siswa_tugas extends CI_Controller {
             'tanggal'=>$tanggal, 
             'nilai'=>'-');
         $this->db->insert('tugas_terkumpul',$data);
+        $this->session->set_flashdata('message','<div class="alert alert-success" role="alert">
+                berhasil mengupload tugas
+            </div>');
         return redirect('C_siswa_tugas');
     }
 

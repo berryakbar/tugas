@@ -5,7 +5,17 @@
     <div class="card-body">
             <div class="row">
             	<div class="col-md-12">
-      <h4>TUGAS TERKUMPUL<a href="<?= base_url('C_Tugas/') ?>" class="btn btn-primary float-right">Daftar Tugas</a></h4><br>
+      <h4>TUGAS TERKUMPUL : 
+        <a href="" class="btn btn-success">
+          <?= cek_pelajaran($id_pelajaran) ?>
+        </a>
+        <a href="" class="btn btn-warning"> 
+          <?= cek_kelas($id_kelas)  ?>
+        </a> 
+        <a href="<?= base_url('C_Tugas/') ?>" class="btn btn-primary float-right">
+          Daftar Tugas
+        </a>
+      </h4><br>
             		<?= $this->session->flashdata('message') ?>
             	<div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
